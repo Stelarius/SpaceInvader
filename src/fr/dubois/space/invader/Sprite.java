@@ -17,8 +17,8 @@ public abstract class Sprite {
 		this.x = x;
 		this.y = y;
 		paint = new Paint();
-	}
-
+	}	
+	
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(bitmap, x, y, paint);
 	}
@@ -28,8 +28,4 @@ public abstract class Sprite {
 	}
 	
 	public abstract void act();
-
-	
-	
-
 }
