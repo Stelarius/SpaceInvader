@@ -50,6 +50,7 @@ public class SpaceInvaderView extends View {
 		init();
 	}
 	
+
 	// Méthode loadImage prenant en paramètre l'identifiant d'une image et retournant l'image référée
     public Bitmap loadImage(int key) {
     	Resources r = this.getContext().getResources(); 
@@ -63,6 +64,26 @@ public class SpaceInvaderView extends View {
         return bitmap;
     }
 
+    private RefreshHandler mRedrawHandler = new RefreshHandler();
+	
+    class RefreshHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+        	SpaceInvaderView.this.update();
+        	SpaceInvaderView.this.invalidate();
+        }
+        public void sleep(long delayMillis) {
+        	this.removeMessages(0);
+            sendMessageDelayed(obtainMessage(0), delayMillis);
+        }
+    };
+
+    public void update() {
+		// TODO Auto-generated method stub
+		mRedrawHandler.sleep(40);
+		alien.act();
+	}
+
 	void init(){
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
@@ -73,6 +94,7 @@ public class SpaceInvaderView extends View {
 		text = "Soracia Invader";
 		Bitmap bmp_alien = loadImage(R.drawable.alien1); // Charge l'image dans un bitmap
 		alien = new Alien(bmp_alien, 0, 0); // Initie le premier alien aux coordonnées 0,0
+		this.update();
 	}
 
 	@Override
