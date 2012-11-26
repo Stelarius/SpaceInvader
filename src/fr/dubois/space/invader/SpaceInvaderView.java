@@ -8,14 +8,14 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
-
-import fr.dubois.space.invader.Alien;
 
 public class SpaceInvaderView extends View {
 
@@ -25,8 +25,10 @@ public class SpaceInvaderView extends View {
 
 	private Paint paint; // Style pour le texte
 	private String text; // texte Ã  afficher
-	Matrix transform;
-	Alien alien;
+	private Matrix transform;
+	private Matrix intransform;
+	private Alien alien;
+	private Ship ship;
 
 	public SpaceInvaderView(Context context) {
 		super(context);
@@ -76,6 +78,7 @@ public class SpaceInvaderView extends View {
 		// TODO Auto-generated method stub
 		mRedrawHandler.sleep(40);
 		alien.act();
+		ship.act();
 	}
 
 	void init() {
@@ -88,22 +91,25 @@ public class SpaceInvaderView extends View {
 		text = "Soracia Invader";
 		Bitmap bmp_alien = loadImage(R.drawable.alien1); // Charge l'image dans
 															// un bitmap
+		Bitmap bmp_ship = loadImage(R.drawable.ship);
 		alien = new Alien(bmp_alien, 0, 0); // Initie le premier alien aux
 											// coordonnées 0,0
+		ship = new Ship(bmp_ship, 300, 700);
 		this.update();
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		this.onSizeChanged(TARGET_WIDTH, TARGET_HEIGHT, this.getWidth(), this.getHeight());
+		canvas.concat(transform);
 		canvas.drawRGB(0, 0, 0);
 		canvas.drawRect(0, 0, TARGET_WIDTH - 1, TARGET_HEIGHT - 1, paint);
 		if (text != null) {
-			canvas.drawText(text, canvas.getWidth() / 2,
-					canvas.getHeight() / 2, paint);
+			canvas.drawText(text, TARGET_WIDTH / 2, TARGET_HEIGHT / 2, paint);
 		}
+		ship.draw(canvas);
 		alien.draw(canvas); // Dessine l'alien dans le canvas
-
 	}
 
 	private int computeSize(int spec, int def) {
@@ -127,8 +133,30 @@ public class SpaceInvaderView extends View {
 		this.setMeasuredDimension(x, y);
 	}
 
-	protected void onSizeChanged() {
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		// TODO Auto-generated method stub
+		super.onSizeChanged(w, h, oldw, oldh);
 		transform = new Matrix();
-		transform.setRectToRect(RectF rectangle_source, RectF rectangle_distant, Matrix.ScaleToFit mise_echelle);
+		intransform = new Matrix();
+		RectF rectVoulu = new RectF(0, 0, w, h);
+		RectF rectReel = new RectF(0, 0, oldw, oldh);
+		transform.setRectToRect(rectVoulu, rectReel, Matrix.ScaleToFit.CENTER);	
+		transform.invert(intransform);
 	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
+			float[] tabFloat = new float[]{event.getX(), event.getY()};
+			intransform.mapPoints(tabFloat);
+			ship.x = tabFloat[0];
+		}
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
+	
+
 }
