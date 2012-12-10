@@ -150,7 +150,9 @@ public class SpaceInvaderView extends View {
 		if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
 			float[] tabFloat = new float[]{event.getX(), event.getY()};
 			intransform.mapPoints(tabFloat);
-			ship.x = tabFloat[0];
+			float valeur_cible = tabFloat[0];
+			//ship.x = tabFloat[0];
+			ship.act(valeur_cible);
 		}
 		// TODO Auto-generated method stub
 		return true;

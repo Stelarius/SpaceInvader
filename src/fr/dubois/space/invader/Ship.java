@@ -11,7 +11,14 @@ public class Ship extends Sprite {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void act() {
-		
+	public void act(){
+	}
+	
+	public void act(float valeur_cible){
+		float x_minimal = this.x - VITESSE;
+		float x_maximal = this.x + VITESSE;
+		if(valeur_cible < x_minimal)	this.x = x_minimal;
+		else if(valeur_cible > x_maximal)	this.x = x_maximal;
+		else if(x_minimal < valeur_cible && valeur_cible < x_maximal) this.x = valeur_cible;
 	}
 }
