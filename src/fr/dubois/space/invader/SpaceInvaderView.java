@@ -1,5 +1,7 @@
 package fr.dubois.space.invader;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -14,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,6 +32,8 @@ public class SpaceInvaderView extends View {
 	private Matrix intransform;
 	private Alien alien;
 	private Ship ship;
+	ArrayList<Missile> liste_missile;
+
 
 	public SpaceInvaderView(Context context) {
 		super(context);
@@ -76,6 +81,9 @@ public class SpaceInvaderView extends View {
 
 	public void update() {
 		// TODO Auto-generated method stub
+		for(Missile m: liste_missile){
+			m.act();
+		}
 		mRedrawHandler.sleep(40);
 		alien.act();
 		ship.act();
@@ -89,13 +97,13 @@ public class SpaceInvaderView extends View {
 		paint.setTextSize(36);
 		paint.setTextAlign(Paint.Align.CENTER);
 		text = "Soracia Invader";
-		Bitmap bmp_alien = loadImage(R.drawable.alien1); // Charge l'image dans
-															// un bitmap
+		Bitmap bmp_alien = loadImage(R.drawable.alien1);
 		Bitmap bmp_ship = loadImage(R.drawable.ship);
-		alien = new Alien(bmp_alien, 0, 0); // Initie le premier alien aux
-											// coordonnées 0,0
+		Bitmap bmp_missile = loadImage(R.drawable.missile);
+		liste_missile = new ArrayList<Missile>();
+		alien = new Alien(bmp_alien, 0, 0);
 		ship = new Ship(bmp_ship, 300, 700);
-		this.update();
+		update();
 	}
 
 	@Override
@@ -110,19 +118,18 @@ public class SpaceInvaderView extends View {
 		}
 		ship.draw(canvas);
 		alien.draw(canvas); // Dessine l'alien dans le canvas
+		for(Missile m: liste_missile){
+			m.draw(canvas);
+		}
 	}
 
 	private int computeSize(int spec, int def) {
 		int mode = View.MeasureSpec.getMode(spec);
-		if (mode == View.MeasureSpec.UNSPECIFIED)
-			return def;
+		if (mode == View.MeasureSpec.UNSPECIFIED)	return def;
 		int size = View.MeasureSpec.getSize(spec);
-		if (mode == View.MeasureSpec.EXACTLY) {
-			return size;
-		}
+		if (mode == View.MeasureSpec.EXACTLY)	return size;
 		// MeasureSpec.AT_MOST
-		if (size < def)
-			return size;
+		if (size < def)	return size;
 		return def;
 	}
 
@@ -134,13 +141,13 @@ public class SpaceInvaderView extends View {
 	}
 
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+	protected void onSizeChanged(int largeur, int hauteur, int ancien_largeur, int ancien_hauteur) {
 		// TODO Auto-generated method stub
-		super.onSizeChanged(w, h, oldw, oldh);
+		super.onSizeChanged(largeur, hauteur, ancien_largeur, ancien_hauteur);
 		transform = new Matrix();
 		intransform = new Matrix();
-		RectF rectVoulu = new RectF(0, 0, w, h);
-		RectF rectReel = new RectF(0, 0, oldw, oldh);
+		RectF rectVoulu = new RectF(0, 0, largeur, hauteur);
+		RectF rectReel = new RectF(0, 0, ancien_largeur, ancien_hauteur);
 		transform.setRectToRect(rectVoulu, rectReel, Matrix.ScaleToFit.CENTER);	
 		transform.invert(intransform);
 	}
@@ -152,13 +159,9 @@ public class SpaceInvaderView extends View {
 			intransform.mapPoints(tabFloat);
 			float valeur_cible = tabFloat[0];
 			//ship.x = tabFloat[0];
-			ship.act(valeur_cible);
+			ship.setValeur_cible(valeur_cible);
 		}
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
-	
-	
-
 }
