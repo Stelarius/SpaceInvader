@@ -33,6 +33,9 @@ public class SpaceInvaderView extends View {
 	private Alien alien;
 	private Ship ship;
 	ArrayList<Missile> liste_missile;
+	Bitmap bmp_missile = loadImage(R.drawable.missile);
+	Bitmap bmp_missile2 = loadImage(R.drawable.missile2);
+
 
 
 	public SpaceInvaderView(Context context) {
@@ -99,7 +102,6 @@ public class SpaceInvaderView extends View {
 		text = "Soracia Invader";
 		Bitmap bmp_alien = loadImage(R.drawable.alien1);
 		Bitmap bmp_ship = loadImage(R.drawable.ship);
-		Bitmap bmp_missile = loadImage(R.drawable.missile);
 		liste_missile = new ArrayList<Missile>();
 		alien = new Alien(bmp_alien, 0, 0);
 		ship = new Ship(bmp_ship, 300, 700);
@@ -151,6 +153,11 @@ public class SpaceInvaderView extends View {
 		transform.setRectToRect(rectVoulu, rectReel, Matrix.ScaleToFit.CENTER);	
 		transform.invert(intransform);
 	}
+	
+	public void fire(){
+		Missile missile = new Missile(bmp_missile2, ship.x + 20, ship.y - 50, 0, 3);
+		liste_missile.add(missile);
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -161,6 +168,7 @@ public class SpaceInvaderView extends View {
 			//ship.x = tabFloat[0];
 			ship.setValeur_cible(valeur_cible);
 		}
+		if(event.getAction() == MotionEvent.ACTION_UP)	fire();
 		// TODO Auto-generated method stub
 		return true;
 	}
