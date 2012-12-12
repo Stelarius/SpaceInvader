@@ -88,7 +88,6 @@ public class SpaceInvaderView extends View {
 		mRedrawHandler.sleep(40);
 		vague_alien.act();
 		ship.act();
-		
 	}
 
 	void init() {

@@ -5,10 +5,12 @@ import android.graphics.Bitmap;
 public class Alien extends Sprite {
 	
 	boolean direction;
+	Wave vague;
 	
-	public Alien(Bitmap bitmap, float x, float y) {
+	public Alien(Bitmap bitmap, float x, float y, Wave vague) {
 		super(bitmap, x, y);
 		direction = true;
+		vague = this.vague;
 	}
 	
 	@Override

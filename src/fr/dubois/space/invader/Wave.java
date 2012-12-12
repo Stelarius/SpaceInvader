@@ -12,12 +12,12 @@ public class Wave{
 	public Wave(Bitmap bitmap) {
 		bitmap = this.bitmap;
 		liste_alien = new ArrayList<Alien>();
-		liste_alien.add(new Alien(bitmap, 0, 0));
+		liste_alien.add(new Alien(bitmap, 0, 0, this));
 	}
 	
 	public void draw(Canvas canvas) {
 		for(Alien alien: liste_alien){
-			alien.draw(canvas);
+			//alien.draw(canvas);
 			//canvas.drawBitmap(alien.bitmap, alien.x, alien.y, alien.paint);
 		}
 	}
