@@ -31,7 +31,7 @@ public class SpaceInvaderView extends View {
 	private String text; // texte à afficher
 	private Matrix transform;
 	private Matrix intransform;
-	private Alien alien;
+	private Wave vague_alien;
 	private Ship ship;
 	ArrayList<Missile> liste_missile;
 	Bitmap bmp_missile = loadImage(R.drawable.missile);
@@ -92,7 +92,7 @@ public class SpaceInvaderView extends View {
 			if(m.y == 0)	it.remove();
 		}
 		mRedrawHandler.sleep(40);
-		alien.act();
+		vague_alien.act();
 		ship.act();
 		
 	}
@@ -108,7 +108,7 @@ public class SpaceInvaderView extends View {
 		Bitmap bmp_alien = loadImage(R.drawable.alien1);
 		Bitmap bmp_ship = loadImage(R.drawable.ship);
 		liste_missile = new ArrayList<Missile>();
-		alien = new Alien(bmp_alien, 0, 0);
+		vague_alien = new Wave(bmp_alien);
 		ship = new Ship(bmp_ship, 300, 700);
 		update();
 	}
@@ -124,7 +124,7 @@ public class SpaceInvaderView extends View {
 			canvas.drawText(text, TARGET_WIDTH / 2, TARGET_HEIGHT / 2, paint);
 		}
 		ship.draw(canvas);
-		alien.draw(canvas); // Dessine l'alien dans le canvas
+		vague_alien.draw(canvas); // Dessine l'alien dans le canvas
 		for(Missile m: liste_missile){
 			m.draw(canvas);
 		}

@@ -17,17 +17,14 @@ public class Ship extends Sprite {
 		if(valeur_cible != this.x){
 			float x_minimal = this.x - VITESSE;
 			float x_maximal = this.x + VITESSE;
-			if(valeur_cible < x_minimal){
-				this.x = x_minimal;
-			} else if(valeur_cible > x_maximal)	{
-				this.x = x_maximal;
-			} else {
-				this.x = valeur_cible;
-			}
+			if(valeur_cible < x_minimal)	this.x = x_minimal;
+			else if(valeur_cible > x_maximal)	this.x = x_maximal;
+			else this.x = valeur_cible;
 		}
 	}
 
 	public void setValeur_cible(float valeur_cible) {
 		this.valeur_cible = valeur_cible - (bitmap.getWidth() / 2);
 	}
+	
 }
