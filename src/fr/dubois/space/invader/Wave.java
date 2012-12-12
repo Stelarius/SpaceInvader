@@ -11,14 +11,14 @@ public class Wave{
 	
 	public Wave(Bitmap bitmap) {
 		bitmap = this.bitmap;
-		for(Alien alien: liste_alien){
-			alien = new Alien(bitmap, 0, 0);
-		}
+		liste_alien = new ArrayList<Alien>();
+		liste_alien.add(new Alien(bitmap, 0, 0));
 	}
 	
 	public void draw(Canvas canvas) {
 		for(Alien alien: liste_alien){
-			canvas.drawBitmap(bitmap, alien.x, alien.y, alien.paint);
+			alien.draw(canvas);
+			//canvas.drawBitmap(alien.bitmap, alien.x, alien.y, alien.paint);
 		}
 	}
 	
@@ -27,15 +27,13 @@ public class Wave{
 			if(alien.direction){
 				if(alien.x >= 550){
 					alien.direction = false;
-					alien.y = alien.y + 20;
-				}
-				else	alien.x = alien.x + 10;
-			}else{
+					alien.y += 20;
+				} else	alien.x += 10;
+			} else {
 				if(alien.x <= 0){
 					alien.direction = true;
-					alien.y = alien.y + 20;
-				}
-				else	alien.x = alien.x - 10;
+					alien.y += 20;
+				} else	alien.x -= 10;
 			}
 		}
 	}
