@@ -1,6 +1,7 @@
 package fr.dubois.space.invader;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -84,12 +85,16 @@ public class SpaceInvaderView extends View {
 
 	public void update() {
 		// TODO Auto-generated method stub
-		for(Missile m: liste_missile){
+		Iterator<Missile> it = liste_missile.iterator();
+		while(it.hasNext()){
+			Missile m = it.next();
 			m.act();
+			if(m.y == 0)	it.remove();
 		}
 		mRedrawHandler.sleep(40);
 		alien.act();
 		ship.act();
+		
 	}
 
 	void init() {
