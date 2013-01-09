@@ -12,7 +12,7 @@ public abstract class Sprite {
 	protected float y;
 	protected Paint paint;
 
-	public Sprite(Bitmap bitmap,float x,float y) {
+	public Sprite(Bitmap bitmap, float x, float y) {
 		this.bitmap = bitmap;
 		this.x = x;
 		this.y = y;

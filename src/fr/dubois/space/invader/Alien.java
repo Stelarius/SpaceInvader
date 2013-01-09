@@ -10,20 +10,20 @@ public class Alien extends Sprite {
 	public Alien(Bitmap bitmap, float x, float y, Wave vague) {
 		super(bitmap, x, y);
 		direction = true;
-		vague = this.vague;
+		this.vague = vague;
 	}
 	
 	@Override
 	public void act() {
 		if(direction){
-			if(x >= 550){
+			if(x >= 500){
 				direction = false;
-				y += 20;
+				y += 40;
 			} else	x += 10;
 		} else {
-			if(x <= 0){
+			if(x <= 50){
 				direction = true;
-				y += 20;
+				y += 40;
 			} else	x -= 10;
 		}
 	}

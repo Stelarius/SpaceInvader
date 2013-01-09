@@ -35,6 +35,8 @@ public class SpaceInvaderView extends View {
 	ArrayList<Missile> liste_missile;
 	Bitmap bmp_missile = loadImage(R.drawable.missile);
 	Bitmap bmp_missile2 = loadImage(R.drawable.missile2);
+	boolean fin_jeu = false;
+	int kill = 0;
 
 	public SpaceInvaderView(Context context) {
 		super(context);
@@ -79,12 +81,22 @@ public class SpaceInvaderView extends View {
 	};
 
 	public void update() {
-		Iterator<Missile> it = liste_missile.iterator();
-		while(it.hasNext()){
-			Missile m = it.next();
-			m.act();
-			if(m.y == 0)	it.remove();
-		}
+		if(vague_alien.testShip(ship)) text = "DEFAITE !";{
+			Iterator<Missile> it = liste_missile.iterator();
+			while(it.hasNext()){
+				Missile m = it.next();
+				m.act();
+				if(m.y == 0)	it.remove();
+				else if(vague_alien.testMissile(m)){
+					it.remove();
+					fin_jeu = true;
+					kill++;
+					if(kill == 1) text = "Alien détruit : " + kill;
+					else if(kill < 10) text = "Aliens détruits : " + kill;
+					else	text = "VICTOIRE !";
+				}
+			}
+		}	
 		mRedrawHandler.sleep(40);
 		vague_alien.act();
 		ship.act();
@@ -149,7 +161,7 @@ public class SpaceInvaderView extends View {
 	}
 	
 	public void fire(){
-		Missile missile = new Missile(bmp_missile2, ship.x + 20, ship.y - 50, 0, 3);
+		Missile missile = new Missile(bmp_missile2, ship.x + 20, ship.y - 50, 0, 20);
 		liste_missile.add(missile);
 	}
 
